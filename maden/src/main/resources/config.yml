@@ -1,0 +1,37 @@
+# Core Shift Maden genel ayarlari
+messages:
+  prefix: "&8[&bCore Shift Maden&8] &7"
+  no-permission: "&cBu islemi yapmaya yetkin yok."
+  only-player: "&cBu komut sadece oyuncu tarafindan kullanilabilir."
+  usage: "&e/maden create <isim> &7| &e/maden delete <isim> &7| &e/maden list &7| &e/maden reload"
+  worldedit-required: "&cMaden olusturmak icin WorldEdit veya FastAsyncWorldEdit kurulu olmali."
+  selection-required: "&cOnce WorldEdit ile bir Cuboid alan secmelisin."
+  cuboid-required: "&cSecimin Cuboid olmak zorunda. Polygon/sphere secimler kabul edilmez."
+  created: "&a%mine% &7madeni olusturuldu. Secimdeki cevherler otomatik kaydedildi: &fplugins/CoreShiftMaden/mines/%mine%.yml"
+  deleted: "&c%mine% &7madeni silindi. Bekleyen bloklari yuklu chunklarda limitli sekilde geri yukleniyor."
+  not-found: "&c%mine% &7adinda bir maden bulunamadi."
+  reloaded: "&aAyarlar ve madenler yeniden yuklendi."
+  mine-list: "&7Madenler: &b%mines%"
+
+performance:
+  # Restore zamani gelen bloklardan bir tick'te en fazla kac tanesi islenecek.
+  restore-max-per-tick: 100
+
+  # Kirildiktan sonra BEDROCK'a cevrilecek bloklar da tek scheduler kuyrugunda batch islenir.
+  bedrock-max-per-tick: 200
+
+  # Chunk yuklu degilse ASLA zorla yuklenmez ve polling yapilmaz.
+  # ChunkLoadEvent geldiginde ilgili pending bloklar tekrar kuyruga alinir.
+
+  # Dunya bulunamazsa pending kaydi sonsuza kadar bellekte kalmasin.
+  # Dunya daha once yuklenirse WorldLoadEvent kaydi tekrar uyandirir.
+  missing-world-expire-minutes: 10
+
+  # Eski/bozuk bir BlockData parse edilemiyorsa spam yerine seyrek tekrar dene.
+  invalid-blockdata-retry-seconds: 60
+
+  # pending.yml ana thread'de yazilmaz. Snapshot async serialize edilip atomik olarak degistirilir.
+  # Minimum 30 saniyedir.
+  pending-save-interval-seconds: 60
+
+# OPT1: Runtime hard caps: restore<=100, bedrock<=200; create scan <=500000 blocks.

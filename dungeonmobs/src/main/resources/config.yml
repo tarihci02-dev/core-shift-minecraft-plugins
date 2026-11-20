@@ -1,0 +1,24 @@
+# Core Shift Dungeon Mobs - genel ayarlar
+# Mob ayarlari: plugins/CoreShiftDungeonMobs/mobs/*.yml
+
+# Scheduler her bu kadar tickte uyanir. Asil spawn kontrolu nextWakeAt ile atlanir.
+scheduler-period-ticks: 20
+
+# /mob create ve /mob spawn bakis mesafesi
+max-target-distance: 30
+
+# Mob YML'sinde spawn.activation-range yoksa kullanilir.
+# 0 = oyuncu yakinligi arama, chunk yukluyse spawn olabilir.
+default-activation-range: 48.0
+
+# Chunk yuklu ama yakinda oyuncu yoksa kac saniye sonra tekrar kontrol edilsin.
+inactive-retry-seconds: 5
+
+# Dogal despawn/harici remove gibi durumlari direct entity reference ile temizleme araligi.
+cleanup-interval-seconds: 15
+
+# OPT1: inactive/cleanup checks have a 5s hard minimum; max 4 mobs per spawner per spawn cycle.
+
+# Eski bir kurulumdan tasirken onceki eklentinin kucuk harfli adini girin.
+migration:
+  previous-namespace: ""

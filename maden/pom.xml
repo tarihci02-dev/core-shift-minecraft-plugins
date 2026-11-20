@@ -1,0 +1,18 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.coreshift</groupId>
+    <artifactId>minecraft-plugins</artifactId>
+    <version>1.0.0</version>
+  </parent>
+  <artifactId>CoreShiftMaden</artifactId>
+  <version>1.2.3</version>
+  <dependencies>
+    <dependency>
+      <groupId>com.sk89q.worldedit</groupId>
+      <artifactId>worldedit-bukkit</artifactId>
+      <version>7.3.10</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+</project>

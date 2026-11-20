@@ -1,0 +1,17 @@
+name: CoreShiftMaden
+version: 1.2.3
+main: com.coreshift.maden.CoreShiftMaden
+api-version: '1.21'
+authors: ['Core Shift']
+softdepend: [WorldEdit, FastAsyncWorldEdit, WorldGuard]
+commands:
+  maden:
+    description: Maden yonetim komutu
+    usage: /maden
+    permission: coreshift.maden.admin
+permissions:
+  coreshift.maden.admin:
+    default: op
+  coreshift.maden.use:
+    description: Maden alanlarinda blok kirabilme izni
+    default: true

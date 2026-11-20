@@ -41,7 +41,7 @@ public final class MineManager {
       this.chunkIndex.clear();
       File[] var1 = this.minesFolder.listFiles((var0, var1x) -> var1x.toLowerCase(Locale.ROOT).endsWith(".yml"));
       if (var1 != null) {
-         ArrayList<File> var2 = new ArrayList<>(List.of(var1));
+         ArrayList<File> var2 = new ArrayList<>(java.util.Arrays.asList(var1));
          var2.sort(Comparator.comparing(File::getName));
 
          for (File var4 : var2) {
@@ -89,7 +89,7 @@ public final class MineManager {
    }
 
    public Collection<Mine> getAll() {
-      return List.copyOf(this.mines.values());
+      return java.util.Collections.unmodifiableList(new ArrayList<>(this.mines.values()));
    }
 
    public Mine createFromSelection(Player var1, String var2) throws SelectionException, IOException {
@@ -97,7 +97,7 @@ public final class MineManager {
          throw new SelectionException(SelectionException.Reason.UNAVAILABLE);
       } else {
          String var3 = this.sanitize(var2);
-         if (var3.isBlank()) {
+         if (var3.trim().isEmpty()) {
             throw new IllegalArgumentException("Gecersiz maden adi.");
          } else if (this.get(var3) != null) {
             throw new IllegalArgumentException("Bu isimde bir maden zaten var.");
@@ -152,9 +152,9 @@ public final class MineManager {
                      var23.set("block-count", var14.size());
                      var23.set("mineable-blocks", new ArrayList(var15));
                      var23.set("blocks", var14);
-                     var23.setComments(
+                     setCommentsIfSupported(var23,
                         "blocks",
-                        List.of(
+                        java.util.Arrays.asList(
                            "Bu liste /maden create sirasinda secili alandaki cevherlerden otomatik olusur.",
                            "Format: x,y,z,MATERIAL. Runtime'da tum bolge taranmaz; sadece bu koordinatlar kontrol edilir."
                         )
@@ -162,27 +162,27 @@ public final class MineManager {
                      var23.set("respawn.hours", 0);
                      var23.set("respawn.minutes", 5);
                      var23.set("respawn.seconds", 0);
-                     var23.setComments("respawn", List.of("Kirilmis cevherin BEDROCK olarak kaldiktan sonra geri gelme suresi."));
+                     setCommentsIfSupported(var23, "respawn", java.util.Arrays.asList("Kirilmis cevherin BEDROCK olarak kaldiktan sonra geri gelme suresi."));
                      var23.set("natural-drops", false);
-                     var23.setComments("natural-drops", List.of("false = normal Minecraft dropu kapali; asagidaki oduller kullanilir."));
+                     setCommentsIfSupported(var23, "natural-drops", java.util.Arrays.asList("false = normal Minecraft dropu kapali; asagidaki oduller kullanilir."));
 
                      for (String var26 : var15) {
                         String var20 = "rewards." + var26;
                         var23.set(var20 + ".chance", 100.0);
                         var23.set(var20 + ".xp", 0);
-                        var23.set(var20 + ".items", List.of());
-                        var23.set(var20 + ".commands", List.of());
+                        var23.set(var20 + ".items", java.util.Collections.emptyList());
+                        var23.set(var20 + ".commands", java.util.Collections.emptyList());
                         var23.set(var20 + ".message", "");
                      }
 
                      var23.set("rewards.DEFAULT.chance", 100.0);
                      var23.set("rewards.DEFAULT.xp", 0);
-                     var23.set("rewards.DEFAULT.items", List.of());
-                     var23.set("rewards.DEFAULT.commands", List.of());
+                     var23.set("rewards.DEFAULT.items", java.util.Collections.emptyList());
+                     var23.set("rewards.DEFAULT.commands", java.util.Collections.emptyList());
                      var23.set("rewards.DEFAULT.message", "");
-                     var23.setComments(
+                     setCommentsIfSupported(var23,
                         "rewards",
-                        List.of(
+                        java.util.Arrays.asList(
                            "Her cevher turunun odulu burada ayarlanabilir.",
                            "items ornegi: [{material: DIAMOND, min: 1, max: 3, chance: 100.0}]",
                            "commands ornegi: [\"eco give %player% 500\"]",
@@ -240,6 +240,16 @@ public final class MineManager {
                var3.computeIfAbsent(chunkKey(var8, var9), var0 -> new ArrayList<>()).add(var1);
             }
          }
+      }
+   }
+
+   private static void setCommentsIfSupported(YamlConfiguration config, String path, List<String> lines) {
+      try {
+         config.getClass().getMethod("setComments", String.class, List.class).invoke(config, path, lines);
+      } catch (NoSuchMethodException ignored) {
+         // YAML section comments were introduced after Minecraft 1.16.
+      } catch (ReflectiveOperationException e) {
+         throw new IllegalStateException("YAML yorumlari kaydedilemedi", e);
       }
    }
 

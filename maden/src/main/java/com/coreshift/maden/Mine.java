@@ -87,7 +87,7 @@ public final class Mine {
       HashSet var24 = new HashSet();
 
       for (String var13 : var21) {
-         if (var13 != null && !var13.isBlank()) {
+         if (var13 != null && !var13.trim().isEmpty()) {
             String[] var26 = var13.split(",", 4);
             if (var26.length == 4) {
                try {
@@ -153,7 +153,7 @@ public final class Mine {
          }
       }
 
-      List var14 = List.copyOf(var1.getStringList("commands"));
+      List var14 = var1.getStringList("commands");
       String var15 = var1.getString("message", "");
       return new RewardDefinition(var2, var4, var5, var14, var15);
    }
@@ -219,7 +219,8 @@ public final class Mine {
    }
 
    private static int intValue(Object var0, int var1) {
-      if (var0 instanceof Number var2) {
+      if (var0 instanceof Number) {
+         Number var2 = (Number) var0;
          return var2.intValue();
       } else {
          try {
@@ -231,7 +232,8 @@ public final class Mine {
    }
 
    private static double doubleValue(Object var0, double var1) {
-      if (var0 instanceof Number var3) {
+      if (var0 instanceof Number) {
+         Number var3 = (Number) var0;
          return var3.doubleValue();
       } else {
          try {

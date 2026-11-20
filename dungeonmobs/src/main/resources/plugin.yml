@@ -1,7 +1,7 @@
 name: CoreShiftDungeonMobs
-version: 1.3.1
+version: 1.4.0
 main: com.coreshift.dungeonmobs.DungeonMobsPlugin
-api-version: '1.21'
+api-version: '1.16'
 author: 'Core Shift'
 softdepend: [Vault]
 commands:

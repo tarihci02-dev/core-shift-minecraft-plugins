@@ -32,10 +32,10 @@ public final class RewardService {
             if (command.startsWith("/")) {
                 command = command.substring(1);
             }
-            if (command.isBlank()) continue;
+            if (command.trim().isEmpty()) continue;
             Bukkit.dispatchCommand(consoleCommandSender, command);
         }
-        if (!rewardDefinition.message().isBlank()) {
+        if (!rewardDefinition.message().trim().isEmpty()) {
             player.sendMessage(CoreShiftMaden.color(this.replace(rewardDefinition.message(), player, mine, material, n, n2, n3)));
         }
     }

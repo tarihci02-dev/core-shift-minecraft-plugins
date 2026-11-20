@@ -150,10 +150,22 @@ TabCompleter {
     }
 
     private boolean supportsArmor(EntityType entityType) {
-        return switch (entityType.name()) {
-            case "ZOMBIE", "HUSK", "DROWNED", "ZOMBIE_VILLAGER", "SKELETON", "STRAY", "WITHER_SKELETON", "BOGGED", "PIGLIN", "PIGLIN_BRUTE", "ZOMBIFIED_PIGLIN" -> true;
-            default -> false;
-        };
+        switch (entityType.name()) {
+            case "ZOMBIE":
+            case "HUSK":
+            case "DROWNED":
+            case "ZOMBIE_VILLAGER":
+            case "SKELETON":
+            case "STRAY":
+            case "WITHER_SKELETON":
+            case "BOGGED":
+            case "PIGLIN":
+            case "PIGLIN_BRUTE":
+            case "ZOMBIFIED_PIGLIN":
+                return true;
+            default:
+                return false;
+        }
     }
 
     private boolean stripEquipmentSection(String string) throws IOException {
@@ -176,7 +188,7 @@ TabCompleter {
                 continue;
             }
             if (bl) {
-                if (string3.isBlank() || Character.isWhitespace(string3.charAt(0))) continue;
+                if (string3.trim().isEmpty() || Character.isWhitespace(string3.charAt(0))) continue;
                 bl = false;
                 arrayList.add(string3);
                 continue;

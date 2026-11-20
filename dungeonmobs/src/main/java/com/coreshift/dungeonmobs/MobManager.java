@@ -225,7 +225,7 @@ public final class MobManager {
    }
 
    private static String readTag(LivingEntity entity, NamespacedKey key, NamespacedKey previousKey) {
-      var tags = entity.getPersistentDataContainer();
+      org.bukkit.persistence.PersistentDataContainer tags = entity.getPersistentDataContainer();
       String value = tags.get(key, PersistentDataType.STRING);
       if (value == null && previousKey != null) {
          value = tags.get(previousKey, PersistentDataType.STRING);
@@ -288,7 +288,8 @@ public final class MobManager {
       Set<UUID> var14 = this.unloadedTrackedByChunk.remove(var4);
 
       for (Entity var10 : var1.getEntities()) {
-         if (var10 instanceof LivingEntity var11) {
+         if (var10 instanceof LivingEntity) {
+            LivingEntity var11 = (LivingEntity) var10;
             String var12 = readTag(var11, mobIdKey, previousMobKey);
             if (var12 == null) continue;
             String var13 = readTag(var11, spawnerIdKey, previousSpawnerKey);
@@ -410,13 +411,15 @@ public final class MobManager {
          return true;
       }
       double rangeSquared = range * range;
+      Location position = new Location(spawner.world, 0, 0, 0);
       for (Player player : spawner.world.getPlayers()) {
          if (player.isDead() || !player.isValid()) {
             continue;
          }
-         double dx = player.getX() - spawner.x;
-         double dy = player.getY() - spawner.y;
-         double dz = player.getZ() - spawner.z;
+         player.getLocation(position);
+         double dx = position.getX() - spawner.x;
+         double dy = position.getY() - spawner.y;
+         double dz = position.getZ() - spawner.z;
          if (dx * dx + dy * dy + dz * dz <= rangeSquared) {
             return true;
          }
@@ -426,7 +429,8 @@ public final class MobManager {
 
    private LivingEntity spawnMob(MobDefinition var1, String var2, Location var3) {
       Entity var4 = var3.getWorld().spawnEntity(var3, var1.entityType);
-      if (var4 instanceof LivingEntity var5) {
+      if (var4 instanceof LivingEntity) {
+         LivingEntity var5 = (LivingEntity) var4;
          if (this.maxHealthAttribute != null) {
             AttributeInstance var6 = var5.getAttribute(this.maxHealthAttribute);
             if (var6 != null) {
@@ -605,7 +609,8 @@ public final class MobManager {
    private void indexLoadedEntitiesOnce() {
       for (World var2 : Bukkit.getWorlds()) {
          for (Entity var4 : var2.getEntities()) {
-            if (var4 instanceof LivingEntity var5) {
+            if (var4 instanceof LivingEntity) {
+               LivingEntity var5 = (LivingEntity) var4;
                String var6 = readTag(var5, mobIdKey, previousMobKey);
                if (var6 == null) continue;
                String var7 = readTag(var5, spawnerIdKey, previousSpawnerKey);
@@ -818,8 +823,9 @@ public final class MobManager {
    private Attribute resolveMaxHealthAttribute() {
       for (String var4 : new String[]{"MAX_HEALTH", "GENERIC_MAX_HEALTH"}) {
          try {
-            if (Attribute.class.getField(var4).get(null) instanceof Attribute var6) {
-               return var6;
+            Object value = Attribute.class.getField(var4).get(null);
+            if (value instanceof Attribute) {
+               return (Attribute) value;
             }
          } catch (ReflectiveOperationException var7) {
          }
@@ -845,7 +851,9 @@ public final class MobManager {
          if (this == var1) {
             return true;
          } else {
-            return !(var1 instanceof MobManager.ChunkKey var2) ? false : this.x == var2.x && this.z == var2.z && this.world.equals(var2.world);
+            if (!(var1 instanceof ChunkKey)) return false;
+            ChunkKey var2 = (ChunkKey) var1;
+            return this.x == var2.x && this.z == var2.z && this.world.equals(var2.world);
          }
       }
 

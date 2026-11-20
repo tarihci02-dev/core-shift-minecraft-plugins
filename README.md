@@ -4,12 +4,12 @@ Bu depo iki bağımsız Paper eklentisinin Java kaynaklarını ve derlenmiş sü
 
 | Eklenti | Kullanım | JAR |
 | --- | --- | --- |
-| Maden 1.2.3 | Seçili alandaki cevherleri kaydeder. Kırılan cevherin geri gelme süresini, eşya ve deneyim ödüllerini maden başına ayarlayabilirsin. | [CoreShiftMaden-1.2.3.jar](dist/CoreShiftMaden-1.2.3.jar) |
-| Dungeon Mobs 1.3.1 | Zindan yaratıklarının doğma noktalarını, oyuncuya yakınlık koşulunu, ekipmanını ve ödüllerini yönetir. | [CoreShiftDungeonMobs-1.3.1.jar](dist/CoreShiftDungeonMobs-1.3.1.jar) |
+| Maden 1.3.0 | Seçili alandaki cevherleri kaydeder. Kırılan cevherin geri gelme süresini, eşya ve deneyim ödüllerini maden başına ayarlayabilirsin. | [CoreShiftMaden-1.3.0.jar](dist/CoreShiftMaden-1.3.0.jar) |
+| Dungeon Mobs 1.4.0 | Zindan yaratıklarının doğma noktalarını, oyuncuya yakınlık koşulunu, ekipmanını ve ödüllerini yönetir. | [CoreShiftDungeonMobs-1.4.0.jar](dist/CoreShiftDungeonMobs-1.4.0.jar) |
 
 ## Kurulum
 
-Derleme hedefi Paper 1.21.4 ve Java 21. Kullanacağın JAR dosyalarını sunucunun `plugins` klasörüne koy ve sunucuyu yeniden başlat. Maden oluşturmak için sunucu sürümüyle uyumlu WorldEdit veya FastAsyncWorldEdit gerekir.
+Hedef sunucu aralığı Paper 1.16.5–26.3. Her eklenti için aynı JAR kullanılır. Sunucuyu kullandığın Paper sürümünün gerektirdiği Java sürümüyle başlat. Kullanacağın JAR dosyalarını sunucunun `plugins` klasörüne koy ve sunucuyu yeniden başlat. Maden oluşturmak için sunucu sürümüyle uyumlu WorldEdit veya FastAsyncWorldEdit gerekir.
 
 - **Maden.** WorldEdit ile bir dikdörtgen prizma seç ve `/maden create demir` komutunu çalıştır. `plugins/CoreShiftMaden/mines/demir.yml` dosyasını düzenle ve `/maden reload` ile uygula.
 - **Dungeon Mobs.** Doğma noktası için bir bloğa bak ve `/mob create muhafiz ZOMBIE` komutunu çalıştır. `plugins/CoreShiftDungeonMobs/mobs/muhafiz.yml` içinde doğma aralığını, canı ve ödülleri ayarlayabilirsin. Değişiklikleri `/mob reload` ile uygula.
@@ -41,7 +41,7 @@ Yeni JAR dosyaları `maden/target/` ve `dungeonmobs/target/` altında oluşur.
 ## Bu sürümdeki iyileştirmeler
 
 - Maden, aynı blok durumunu her kırmada yeniden kopyalamak yerine ilk karşılaşmada önbelleğe alır. Bir dünya veya chunk yüklendiğinde bekleyen blokları kuyruğa eklerken geçici bir liste oluşturmaz.
-- Dungeon Mobs, yaratığın doğabileceği mesafeyi hesaplarken oyuncunun koordinatlarını doğrudan okur. Dünya ve chunk taramalarında zindan etiketi olmayan canlılar için ikinci bir etiket sorgusunu atlar.
+- Dungeon Mobs, oyuncuların doğma noktasına mesafesini hesaplarken aynı konum nesnesini tekrar kullanır. Dünya ve chunk taramalarında zindan etiketi olmayan canlılar için ikinci bir etiket sorgusunu atlar.
 - Maden oluşturma sınırı 500.000 bloktur. Seçim sınırı aşıldığında komut gerçek sınırı gösterir.
 
-Temel kontroller MockBukkit 4.40 ile yapıldı. İki eklentinin açılması, listeleme ve yeniden yükleme komutları, maden ödülü, cevherin geri gelmesi, yakınlık koşuluna göre doğma ve yaratığın Core Shift etiketi doğrulandı. Canlı sunucuda yük testi ve WorldEdit ile alan seçimi ölçüm kapsamı dışındadır.
+Aynı iki JAR için 1.16.5, 1.21.4 ve 26.3 (Paper API build 200) simülasyonlarında açılış, listeleme ve yeniden yükleme komutları, deneyim ödülü, cevherin geri gelmesi, oyuncuya yakın doğma noktasının etkinleşmesi ve yaratık etiketi doğrulandı. Testler canlı sunucu, yük testi veya oyun içi WorldEdit seçimi içermedi.

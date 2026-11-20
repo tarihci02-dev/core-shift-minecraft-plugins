@@ -119,7 +119,7 @@ TabCompleter {
 
     private void list(CommandSender commandSender) {
         String string = this.mineManager.getAll().stream().map(Mine::getName).collect(Collectors.joining(", "));
-        if (string.isBlank()) {
+        if (string.trim().isEmpty()) {
             string = "yok";
         }
         this.plugin.msg(commandSender, "mine-list", "%mines%", string);
@@ -138,10 +138,10 @@ TabCompleter {
             return Collections.emptyList();
         }
         if (stringArray.length == 1) {
-            return this.filter(List.of("create", "delete", "list", "reload"), stringArray[0]);
+            return this.filter(java.util.Arrays.asList("create", "delete", "list", "reload"), stringArray[0]);
         }
         if (stringArray.length == 2 && (stringArray[0].equalsIgnoreCase("delete") || stringArray[0].equalsIgnoreCase("sil"))) {
-            return this.filter(this.mineManager.getAll().stream().map(Mine::getName).toList(), stringArray[1]);
+            return this.filter(this.mineManager.getAll().stream().map(Mine::getName).collect(java.util.stream.Collectors.toList()), stringArray[1]);
         }
         return Collections.emptyList();
     }

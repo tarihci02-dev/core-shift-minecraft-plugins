@@ -26,7 +26,7 @@ implements SelectionProvider {
             }
             BlockVector3 blockVector3 = region.getMinimumPoint();
             BlockVector3 blockVector32 = region.getMaximumPoint();
-            return new SelectionBounds(player.getWorld().getName(), blockVector3.x(), blockVector3.y(), blockVector3.z(), blockVector32.x(), blockVector32.y(), blockVector32.z());
+            return new SelectionBounds(player.getWorld().getName(), blockVector3.getBlockX(), blockVector3.getBlockY(), blockVector3.getBlockZ(), blockVector32.getBlockX(), blockVector32.getBlockY(), blockVector32.getBlockZ());
         }
         catch (IncompleteRegionException incompleteRegionException) {
             throw new SelectionException(SelectionException.Reason.INCOMPLETE, (Throwable)incompleteRegionException);

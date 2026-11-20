@@ -105,7 +105,7 @@ public final class PendingManager implements Listener {
          long var3 = System.currentTimeMillis();
          boolean var5 = false;
 
-         for (PendingBlock var7 : List.copyOf(var2)) {
+         for (PendingBlock var7 : new ArrayList<>(var2)) {
             if (this.get(var7.world(), var7.positionKey()) == var7) {
                this.removeInternal(var7, false);
                PendingBlock var8 = new PendingBlock(var7.mine(), var7.world(), var7.x(), var7.y(), var7.z(), var7.blockData(), var3);
@@ -310,7 +310,7 @@ public final class PendingManager implements Listener {
    private void load() {
       if (this.file.exists()) {
          YamlConfiguration var1 = YamlConfiguration.loadConfiguration(this.file);
-         var var2 = new ArrayList<>(var1.getMapList("blocks"));
+         List<Map<?, ?>> var2 = var1.getMapList("blocks");
          if (!var2.isEmpty()) {
             for (Map var9 : var2) {
                PendingBlock var10 = this.parseRow(var9);
@@ -333,7 +333,7 @@ public final class PendingManager implements Listener {
                         var6.getString("block-data", ""),
                         var6.getLong("restore-at")
                      );
-                     if (!var7.mine().isBlank() && !var7.world().isBlank() && !var7.blockData().isBlank()) {
+                     if (!var7.mine().trim().isEmpty() && !var7.world().trim().isEmpty() && !var7.blockData().trim().isEmpty()) {
                         this.indexLoaded(var7);
                      }
                   }
@@ -347,7 +347,7 @@ public final class PendingManager implements Listener {
       String var2 = stringValue(var1.get("mine"));
       String var3 = stringValue(var1.get("world"));
       String var4 = stringValue(var1.get("block-data"));
-      return var2 != null && var3 != null && var4 != null && !var2.isBlank() && !var3.isBlank() && !var4.isBlank()
+      return var2 != null && var3 != null && var4 != null && !var2.trim().isEmpty() && !var3.trim().isEmpty() && !var4.trim().isEmpty()
          ? new PendingBlock(
             var2, var3, intValue(var1.get("x"), 0), intValue(var1.get("y"), 0), intValue(var1.get("z"), 0), var4, longValue(var1.get("restore-at"), 0L)
          )
@@ -492,7 +492,7 @@ public final class PendingManager implements Listener {
          }
 
          Path var7 = var13.resolveSibling(var13.getFileName() + ".tmp");
-         Files.writeString(var7, var12, StandardCharsets.UTF_8, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
+         Files.write(var7, var12.getBytes(StandardCharsets.UTF_8), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.WRITE);
 
          try {
             Files.move(var7, var13, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
@@ -533,7 +533,8 @@ public final class PendingManager implements Listener {
    }
 
    private static int intValue(Object var0, int var1) {
-      if (var0 instanceof Number var2) {
+      if (var0 instanceof Number) {
+         Number var2 = (Number) var0;
          return var2.intValue();
       } else {
          try {
@@ -545,7 +546,8 @@ public final class PendingManager implements Listener {
    }
 
    private static long longValue(Object var0, long var1) {
-      if (var0 instanceof Number var3) {
+      if (var0 instanceof Number) {
+         Number var3 = (Number) var0;
          return var3.longValue();
       } else {
          try {
@@ -556,6 +558,36 @@ public final class PendingManager implements Listener {
       }
    }
 
-   private record RestoreEntry(PendingBlock block, long nextAttemptAt) {
+   private static final class RestoreEntry {
+       private final PendingBlock block;
+       private final long nextAttemptAt;
+
+       private RestoreEntry(PendingBlock block, long nextAttemptAt) {
+           this.block = block;
+           this.nextAttemptAt = nextAttemptAt;
+       }
+
+       public PendingBlock block() {
+           return block;
+       }
+
+       public long nextAttemptAt() {
+           return nextAttemptAt;
+       }
+
+       @Override
+       public boolean equals(Object value) {
+           if (this == value) return true;
+           if (!(value instanceof RestoreEntry)) return false;
+           RestoreEntry other = (RestoreEntry) value;
+           return java.util.Objects.equals(block, other.block)
+                   && nextAttemptAt == other.nextAttemptAt;
+       }
+
+       @Override
+       public int hashCode() {
+           return java.util.Objects.hash(block, nextAttemptAt);
+       }
+
    }
 }
